@@ -1,0 +1,5 @@
+const TIPO_INSTRUCCION={
+    PRINT: 'INST_PRINT'
+}
+
+module.exports = TIPO_INSTRUCCION

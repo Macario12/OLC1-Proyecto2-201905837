@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Proyecto Compiladores 1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Macario12/OLC1-Proyecto2-201905837.git"
+  },
+  "author": "Ariel Macario",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Macario12/OLC1-Proyecto2-201905837/issues"
+  },
+  "homepage": "https://github.com/Macario12/OLC1-Proyecto2-201905837#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jison": "^0.4.18"
+  }
+}
