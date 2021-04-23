@@ -219,7 +219,7 @@ TIPO: char
 ;
 
 EXP:  EXP mas EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.SUMA,this._$.first_line,this._$.first_column+1)}
-    | EXP menos EXP
+    | EXP menos EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.RESTA,this._$.first_line,this._$.first_column+1)}
     | EXP div EXP
     | EXP multi EXP
     | EXP exponente EXP

@@ -101,6 +101,9 @@ break;
 case 63:
 this.$ = INSTRUCCION.nuevaOperacionBinaria($$[$0-2], $$[$0], TIPO_OPERACION.SUMA,this._$.first_line,this._$.first_column+1)
 break;
+case 64:
+this.$ = INSTRUCCION.nuevaOperacionBinaria($$[$0-2], $$[$0], TIPO_OPERACION.RESTA,this._$.first_line,this._$.first_column+1)
+break;
 case 72:
 this.$ = INSTRUCCION.nuevoValor($$[$0], TIPO_VALOR.STRING, this._$.first_line,this._$.first_column+1)
 break;

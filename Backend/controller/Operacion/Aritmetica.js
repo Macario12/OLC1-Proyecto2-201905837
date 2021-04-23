@@ -22,7 +22,7 @@ function suma(_OpzIzq, _OpDer, _ambito){
     const opIzq = Aritmetica(_OpzIzq, _ambito)
     const opDer = Aritmetica(_OpDer, _ambito)
 
-    const tipoRes = Resultado(opIzq.tipo, opDer.tipo)
+    const tipoRes = Resultado.ResultadoSuma(opIzq.tipo, opDer.tipo)
     if(tipoRes!= null){
         if(tipoRes === TIPO_DATO.INT){
             var resultado = Number(opIzq.valor)+ Number(opDer.valor);
@@ -63,22 +63,12 @@ function resta(_OpzIzq, _OpDer, _ambito){
     const opIzq = Aritmetica(_OpzIzq, _ambito)
     const opDer = Aritmetica(_OpDer, _ambito)
 
-    const tipoRes = Resultado(opIzq.tipo, opDer.tipo)
+    const tipoRes = Resultado.ResultadoResta(opIzq.tipo, opDer.tipo)
     if(tipoRes!= null){
         if(tipoRes === TIPO_DATO.INT){
-            var resultado = Number(opIzq.valor)+ Number(opDer.valor);
-            if(!Number(opIzq.valor)){resultado = opIzq.valor.charCodeAt() + Number(opDer.valor);}
-            if(!Number(opDer.valor)){resultado = Number(opIzq.valor) + opDer.valor.charCodeAt();}
-            return{
-                valor: resultado,
-                tipo: tipoRes,
-                linea: _OpzIzq.linea,
-                columna: _OpzIzq.columna
-            }
-        }
-
-        else if(tipoRes === TIPO_DATO.STRING){
-            const resultado = opIzq.valor.toString() + opDer.valor.toString();
+            var resultado = Number(opIzq.valor) - Number(opDer.valor);
+            if(!Number(opIzq.valor)){resultado = opIzq.valor.charCodeAt() - Number(opDer.valor);}
+            if(!Number(opDer.valor)){resultado = Number(opIzq.valor) - opDer.valor.charCodeAt();}
             return{
                 valor: resultado,
                 tipo: tipoRes,
@@ -87,7 +77,6 @@ function resta(_OpzIzq, _OpDer, _ambito){
             }
         }
  
-        
     }
 
     var respuesta = (opIzq.tipo === null ? opIzq.valor: "") + (opDer.tipo === null ? opDer.valor: "")
