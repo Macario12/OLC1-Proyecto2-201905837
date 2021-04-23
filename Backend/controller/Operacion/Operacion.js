@@ -5,7 +5,7 @@ const Aritmetica = require("./Aritmetica");
 
 function Operacion(_expresion, _ambito){
     if(_expresion.tipo === TIPO_VALOR.INT || _expresion.tipo === TIPO_VALOR.STRING || _expresion.tipo === TIPO_VALOR.BOOLEAN
-        || _expresion.tipo === TIPO_VALOR.CHAR){
+        || _expresion.tipo === TIPO_VALOR.CHAR || _expresion.tipo === TIPO_VALOR.IDENTIFICADOR){
         return ValorExpresion(_expresion, _ambito)
     }else if (_expresion.tipo === TIPO_OPERACION.SUMA){
         return Aritmetica(_expresion, _ambito)

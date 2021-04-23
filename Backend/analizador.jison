@@ -187,8 +187,8 @@ CUERPOMETODO: IFS CUERPOMETODO
     | PRINT
 ;
 
-DEC_VAR: TIPO identificador ptcoma
-        | TIPO identificador igual EXP ptcoma
+DEC_VAR: TIPO identificador ptcoma { $$ = INSTRUCCION.nuevaDeclaracion($2,null, $1,this._$.first_line,this._$.first_column+1);}
+        | TIPO identificador igual EXP ptcoma { $$ = INSTRUCCION.nuevaDeclaracion($2,$4, $1,this._$.first_line,this._$.first_column+1);}
         | TIPO identificador igual CASTEO ptcoma
         | TIPO identificador igual ACCESS ptcoma
         | TIPO identificador igual TOLOWEER ptcoma
@@ -206,26 +206,27 @@ RETURN: return EXP ptcoma
     | return ptcoma
 ;
 
-INICIALIZACION: identificador igual EXP ptcoma
+INICIALIZACION: identificador igual EXP ptcoma {$$=INSTRUCCION.nuevaAsignacion($1,$3,this._$.first_line,this._$.first_column+1 )}
 ;
 
 CASTEO: parA TIPO parC EXP
 ;
-TIPO: char
-    | boolean
-    | double
-    | int
-    | string
+TIPO: char {$$ = TIPO_DATO.CHAR}
+    | boolean {$$= TIPO_DATO.BOOLEAN}
+    | double {$$ =TIPO_DATO.DOUBLE}
+    | int {$$ = TIPO_DATO.INT}
+    | string {$$ = TIPO_DATO.STRING}
 ;
 
 EXP:  EXP mas EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.SUMA,this._$.first_line,this._$.first_column+1)}
     | EXP menos EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.RESTA,this._$.first_line,this._$.first_column+1)}
+    | parA EXP parC {$$ = $2}
     | EXP div EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.DIVISION,this._$.first_line,this._$.first_column+1)}
     | EXP multi EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.MULTIPLICACION,this._$.first_line,this._$.first_column+1)}
     | EXP exponente EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.POTENCIA,this._$.first_line,this._$.first_column+1)}
     | menos EXP %prec umenos {$$ = INSTRUCCION.nuevaOperacionBinaria(1, $2, TIPO_OPERACION.NEGACION,this._$.first_line,this._$.first_column+1)}
     | EXP modulo EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.MODULO,this._$.first_line,this._$.first_column+1)}
-    | identificador
+    | identificador {$$ = INSTRUCCION.nuevoValor($1, TIPO_VALOR.IDENTIFICADOR, this._$.first_line,this._$.first_column+1)}
     | LLAMADAS 
     | cadena {$$ = INSTRUCCION.nuevoValor($1, TIPO_VALOR.STRING, this._$.first_line,this._$.first_column+1)}
     | caracter {$$ = INSTRUCCION.nuevoValor($1, TIPO_VALOR.CHAR, this._$.first_line,this._$.first_column+1)}
