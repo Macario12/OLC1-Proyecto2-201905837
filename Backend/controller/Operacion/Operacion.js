@@ -9,6 +9,8 @@ function Operacion(_expresion, _ambito){
         return ValorExpresion(_expresion, _ambito)
     }else if (_expresion.tipo === TIPO_OPERACION.SUMA){
         return Aritmetica(_expresion, _ambito)
+    }else if (_expresion.tipo === TIPO_OPERACION.RESTA){
+        return Aritmetica(_expresion, _ambito)
     }
 }
 
