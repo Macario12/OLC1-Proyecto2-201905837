@@ -222,9 +222,9 @@ EXP:  EXP mas EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION
     | EXP menos EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.RESTA,this._$.first_line,this._$.first_column+1)}
     | EXP div EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.DIVISION,this._$.first_line,this._$.first_column+1)}
     | EXP multi EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.MULTIPLICACION,this._$.first_line,this._$.first_column+1)}
-    | EXP exponente EXP
-    | menos EXP %prec umenos
-    | EXP modulo EXP
+    | EXP exponente EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.POTENCIA,this._$.first_line,this._$.first_column+1)}
+    | menos EXP %prec umenos {$$ = INSTRUCCION.nuevaOperacionBinaria(1, $2, TIPO_OPERACION.NEGACION,this._$.first_line,this._$.first_column+1)}
+    | EXP modulo EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.MODULO,this._$.first_line,this._$.first_column+1)}
     | identificador
     | LLAMADAS 
     | cadena {$$ = INSTRUCCION.nuevoValor($1, TIPO_VALOR.STRING, this._$.first_line,this._$.first_column+1)}

@@ -31,4 +31,12 @@ function ResutladoMulDiv(_tipo1, _tipo2){
     return null;
 }
 
-module.exports = {ResultadoSuma, ResultadoResta, ResutladoMulDiv}
+function ResutladoPoteMod(_tipo1, _tipo2){
+    if(_tipo1 === TIPO_DATO.INT  && _tipo2 === TIPO_DATO.INT){return TIPO_DATO.INT}
+    return null;
+}
+function REsultadoNegacion(_tipo1, _tipo2){
+    if(_tipo2 === TIPO_DATO.INT){return TIPO_DATO.INT}
+    return null;
+}
+module.exports = {ResultadoSuma, ResultadoResta, ResutladoMulDiv, ResutladoPoteMod, REsultadoNegacion}

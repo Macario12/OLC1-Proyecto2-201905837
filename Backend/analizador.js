@@ -110,6 +110,15 @@ break;
 case 66:
 this.$ = INSTRUCCION.nuevaOperacionBinaria($$[$0-2], $$[$0], TIPO_OPERACION.MULTIPLICACION,this._$.first_line,this._$.first_column+1)
 break;
+case 67:
+this.$ = INSTRUCCION.nuevaOperacionBinaria($$[$0-2], $$[$0], TIPO_OPERACION.POTENCIA,this._$.first_line,this._$.first_column+1)
+break;
+case 68:
+this.$ = INSTRUCCION.nuevaOperacionBinaria(1, $$[$0], TIPO_OPERACION.NEGACION,this._$.first_line,this._$.first_column+1)
+break;
+case 69:
+this.$ = INSTRUCCION.nuevaOperacionBinaria($$[$0-2], $$[$0], TIPO_OPERACION.MODULO,this._$.first_line,this._$.first_column+1)
+break;
 case 72:
 this.$ = INSTRUCCION.nuevoValor($$[$0], TIPO_VALOR.STRING, this._$.first_line,this._$.first_column+1)
 break;
