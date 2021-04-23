@@ -21,8 +21,8 @@
                         <mat-card-actions>
                             <div align="right">
                                 <br>
-                                <button  mat-stroked-button  data-bs-toggle="modal" data-bs-target="#modalArbol" >Ejecutar</button>
-                                <button  mat-stroked-button color="accent" data-bs-toggle="modal" data-bs-target="#modalArbol" >Arbol AST</button>
+                                <button  mat-stroked-button  data-bs-toggle="modal" data-bs-target="#modalArbol" (click)="analizar()" >Ejecutar</button>
+                                <button  mat-stroked-button color="accent" data-bs-toggle="modal" data-bs-target="#modalArbol"  (click)="imprimir()">Arbol AST</button>
                                 
                             </div>
                             

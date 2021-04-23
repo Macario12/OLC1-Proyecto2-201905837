@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
+import { AnalizarService } from 'src/app/services/analizar.service';
+
 import {
   MonacoEditorComponent,
   MonacoEditorConstructionOptions,
@@ -26,7 +28,7 @@ export class EditorComponent implements OnInit {
   };
   consoleOptions: MonacoEditorConstructionOptions = {
     theme: 'myCustomTheme',
-    language: 'javascript',
+    language: '',
     roundedSelection: true,
     autoIndent:"full",
     readOnly:true
@@ -37,7 +39,7 @@ export class EditorComponent implements OnInit {
   console = "";
   consola = new FormControl('');
 
-  constructor(private monacoLoaderService: MonacoEditorLoaderService) {
+  constructor(private monacoLoaderService: MonacoEditorLoaderService, private analizarService: AnalizarService) {
     this.monacoLoaderService.isMonacoLoaded$
       .pipe(
         filter(isLoaded => isLoaded),
@@ -70,10 +72,24 @@ export class EditorComponent implements OnInit {
     });
   }
 
-
   ngOnInit(): void {
   }
 
+  imprimir(){
+    console.log(this.consola.value)
+    console.log(this.editorTexto.value)
+  }
 
+  analizar(){
+    var texto = {
+      prueba: this.editorTexto.value
+    }
+    this.analizarService.ejecutar(texto).subscribe((res:any)=>{
+      console.log(res)
+      this.consola.setValue(res.consola);
+    }, err=>{
+      console.log(err)
+    });
+  }
 }
   

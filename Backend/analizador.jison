@@ -108,7 +108,7 @@
 //EXPRESIONES REGULARES
 ([a-zA-Z])([a-zA-Z0-9_])* return 'identificador';
 ["\""]([^"\""])*["\""] return 'cadena';
-["\'"]([^"\""])*["\'"] return 'caracter';
+["\'"]([^"\""])["\'"] return 'caracter';
 
 
 
@@ -122,11 +122,11 @@
     
     const TIPO_DATO = require('./controller/Enums/TipoDato');
    
-    const INSTRUCCION = require('./controller/Instruccion/Instruccion')
+    const INSTRUCCION = require('./controller/Instruccion/Instruccion');
 %}
 
 /* operator associations and precedence */
-%left 'or'
+%left 'or'  
 %left 'and'
 %right 'not'
 %left 'igualigual' 'diferencia' 'menor' 'menorigual' 'mayor' 'mayorigual'
@@ -135,17 +135,14 @@
 %left 'exponente'
 %left umenos
 
-
-%left umenos
-
 %start INICIO
 
 %% /* language grammar */
 
-INICIO: OPCIONESCUERPO EOF{return $4;}
+INICIO:  OPCIONESCUERPO EOF {return $1;}
 ;
 
-OPCIONESCUERPO: OPCIONESCUERPO CUERPO{$1.push($2); $$=$1;}
+OPCIONESCUERPO: OPCIONESCUERPO CUERPO {$1.push($2); $$=$1;}
     | CUERPO {$$=[$1];}
 ;
 
@@ -221,7 +218,7 @@ TIPO: char
     | string
 ;
 
-EXP:  EXP mas EXP
+EXP:  EXP mas EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.SUMA,this._$.first_line,this._$.first_column+1)}
     | EXP menos EXP
     | EXP div EXP
     | EXP multi EXP
@@ -230,15 +227,14 @@ EXP:  EXP mas EXP
     | EXP modulo EXP
     | identificador
     | LLAMADAS 
-    | cadena
-    | caracter
+    | cadena {$$ = INSTRUCCION.nuevoValor($1, TIPO_VALOR.STRING, this._$.first_line,this._$.first_column+1)}
+    | caracter {$$ = INSTRUCCION.nuevoValor($1, TIPO_VALOR.CHAR, this._$.first_line,this._$.first_column+1)}
     | numeros {$$ = INSTRUCCION.nuevoValor(Number($1), TIPO_VALOR.INT, this._$.first_line,this._$.first_column+1)}
-    | BOOL
+    | true {$$ = INSTRUCCION.nuevoValor(($1), TIPO_VALOR.BOOLEAN, this._$.first_line,this._$.first_column+1)}
+    | false {$$ = INSTRUCCION.nuevoValor($1, TIPO_VALOR.BOOLEAN, this._$.first_line,this._$.first_column+1)}
 ;
 
-BOOL: true
-    | false
-;
+
 
 DECLAVECT: TIPO corA corC identificador igual new TIPO corA numeros corC
         | TIPO corA corC identificador igual llaveA EXPRESIONES llaveC
@@ -338,7 +334,7 @@ LLAMADAS: identificador parA EXPRESIONES parC
 ;
 CALLS: LLAMADAS ptcoma
 ;
-PRINT: print parA EXP parC ptcoma {$$ = new INSTRUCCION.nuevoPrint($4, this._$.first_line, this._$.first_column+1)}
+PRINT: print parA EXP parC ptcoma {$$ = new INSTRUCCION.nuevoPrint($3, this._$.first_line, this._$.first_column+1)}
 ;
 
 
