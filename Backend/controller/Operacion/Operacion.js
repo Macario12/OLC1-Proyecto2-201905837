@@ -11,6 +11,10 @@ function Operacion(_expresion, _ambito){
         return Aritmetica(_expresion, _ambito)
     }else if (_expresion.tipo === TIPO_OPERACION.RESTA){
         return Aritmetica(_expresion, _ambito)
+    }else if (_expresion.tipo === TIPO_OPERACION.MULTIPLICACION){
+        return Aritmetica(_expresion, _ambito)
+    }else if (_expresion.tipo === TIPO_OPERACION.DIVISION){
+        return Aritmetica(_expresion, _ambito)
     }
 }
 

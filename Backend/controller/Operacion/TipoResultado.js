@@ -23,4 +23,12 @@ function ResultadoResta(_tipo1, _tipo2){
     return null;
 }
 
-module.exports = {ResultadoSuma, ResultadoResta}
+
+function ResutladoMulDiv(_tipo1, _tipo2){
+    if(_tipo1 === TIPO_DATO.INT  && _tipo2 === TIPO_DATO.INT){return TIPO_DATO.INT}
+    else if ((_tipo1 === TIPO_DATO.INT && _tipo2 === TIPO_DATO.CHAR)){return TIPO_DATO.INT}
+    else if (_tipo1 === TIPO_DATO.CHAR && _tipo2 === TIPO_DATO.INT){return TIPO_DATO.INT}
+    return null;
+}
+
+module.exports = {ResultadoSuma, ResultadoResta, ResutladoMulDiv}

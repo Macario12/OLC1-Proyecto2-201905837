@@ -15,6 +15,12 @@ function Aritmetica(_expresion, _ambito){
     else if (_expresion.tipo === TIPO_OPERACION.RESTA){
         return resta(_expresion.opIzq, _expresion.opDer, _ambito)
     }
+    else if (_expresion.tipo === TIPO_OPERACION.MULTIPLICACION){
+        return multiplicacion(_expresion.opIzq, _expresion.opDer, _ambito)
+    }
+    else if (_expresion.tipo === TIPO_OPERACION.DIVISION){
+        return division(_expresion.opIzq, _expresion.opDer, _ambito)
+    }
 
 }
 
@@ -69,6 +75,68 @@ function resta(_OpzIzq, _OpDer, _ambito){
             var resultado = Number(opIzq.valor) - Number(opDer.valor);
             if(!Number(opIzq.valor)){resultado = opIzq.valor.charCodeAt() - Number(opDer.valor);}
             if(!Number(opDer.valor)){resultado = Number(opIzq.valor) - opDer.valor.charCodeAt();}
+            return{
+                valor: resultado,
+                tipo: tipoRes,
+                linea: _OpzIzq.linea,
+                columna: _OpzIzq.columna
+            }
+        }
+ 
+    }
+
+    var respuesta = (opIzq.tipo === null ? opIzq.valor: "") + (opDer.tipo === null ? opDer.valor: "")
+
+    return {
+        valor: respuesta + '\n ERROR SEMANTICO: NO SE PUDE REALIZAR LA SUMA... Linea: '+ _OpzIzq.linea +'Columna: '+ _OpzIzq.columna,
+        tipo: null,
+        linea: _OpzIzq.linea,
+        columna: _OpzIzq.columna
+
+    }
+}
+
+function multiplicacion(_OpzIzq, _OpDer, _ambito){
+    const opIzq = Aritmetica(_OpzIzq, _ambito)
+    const opDer = Aritmetica(_OpDer, _ambito)
+
+    const tipoRes = Resultado.ResutladoMulDiv(opIzq.tipo, opDer.tipo)
+    if(tipoRes!= null){
+        if(tipoRes === TIPO_DATO.INT){
+            var resultado = Number(opIzq.valor) * Number(opDer.valor);
+            if(!Number(opIzq.valor)){resultado = opIzq.valor.charCodeAt() * Number(opDer.valor);}
+            if(!Number(opDer.valor)){resultado = Number(opIzq.valor) * opDer.valor.charCodeAt();}
+            return{
+                valor: resultado,
+                tipo: tipoRes,
+                linea: _OpzIzq.linea,
+                columna: _OpzIzq.columna
+            }
+        }
+ 
+    }
+
+    var respuesta = (opIzq.tipo === null ? opIzq.valor: "") + (opDer.tipo === null ? opDer.valor: "")
+
+    return {
+        valor: respuesta + '\n ERROR SEMANTICO: NO SE PUDE REALIZAR LA SUMA... Linea: '+ _OpzIzq.linea +'Columna: '+ _OpzIzq.columna,
+        tipo: null,
+        linea: _OpzIzq.linea,
+        columna: _OpzIzq.columna
+
+    }
+}
+
+function division(_OpzIzq, _OpDer, _ambito){
+    const opIzq = Aritmetica(_OpzIzq, _ambito)
+    const opDer = Aritmetica(_OpDer, _ambito)
+
+    const tipoRes = Resultado.ResutladoMulDiv(opIzq.tipo, opDer.tipo)
+    if(tipoRes!= null){
+        if(tipoRes === TIPO_DATO.INT){
+            var resultado = Number(opIzq.valor) / Number(opDer.valor);
+            if(!Number(opIzq.valor)){resultado = opIzq.valor.charCodeAt() / Number(opDer.valor);}
+            if(!Number(opDer.valor)){resultado = Number(opIzq.valor) / opDer.valor.charCodeAt();}
             return{
                 valor: resultado,
                 tipo: tipoRes,
