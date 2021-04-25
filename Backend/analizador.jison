@@ -27,11 +27,17 @@
 "new"               return 'new';
     
 
+">="                   return 'mayorigual';
+"<="                   return 'menorigual';
+"!="                  return 'diferencia';
+"<"                   return 'menor';
+","                   return 'coma';
+">"                   return 'mayor';
 //LISTA
 "list"              return 'list';
 "add"               return 'add';
 "."                 return 'punto';
-
+"=="                   return 'igualigual'
 //SIMBOLOS ARITMETICOS
 "+"                   return 'mas';
 "*"                   return 'multi';
@@ -42,12 +48,6 @@
 "%"                   return 'modulo';
 
 //Operaciones Relacionales
-"!="                  return 'diferencia';
-"<"                   return 'menor';
-"<="                   return 'menorigual';
-","                   return 'coma';
-">"                   return 'mayor';
-">="                   return 'mayorigual';
 
 //Ternario
 "?"                   return 'interrogacion';
@@ -233,6 +233,12 @@ EXP:  EXP mas EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION
     | numeros {$$ = INSTRUCCION.nuevoValor(Number($1), TIPO_VALOR.INT, this._$.first_line,this._$.first_column+1)}
     | true {$$ = INSTRUCCION.nuevoValor(($1), TIPO_VALOR.BOOLEAN, this._$.first_line,this._$.first_column+1)}
     | false {$$ = INSTRUCCION.nuevoValor($1, TIPO_VALOR.BOOLEAN, this._$.first_line,this._$.first_column+1)}
+    | EXP menor EXP  {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.MENOR,this._$.first_line,this._$.first_column+1)}
+    | EXP mayor EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.MAYOR,this._$.first_line,this._$.first_column+1)}
+    | EXP menorigual EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.MENORIGUAL,this._$.first_line,this._$.first_column+1)}
+    | EXP mayorigual EXP{$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.MAYORIGUAL,this._$.first_line,this._$.first_column+1)}
+    | EXP diferencia EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.DIFERENTE,this._$.first_line,this._$.first_column+1)}
+    | EXP igualigual EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.IGUALIGUAL,this._$.first_line,this._$.first_column+1)}
 ;
 
 
@@ -267,52 +273,40 @@ DECLALIST: list menor TIPO mayor identificador igual new  list menor TIPO mayor 
 ADDLIST: identificador punto add parA EXP parC ptcoma
 ;
 
-IFS: if parA CONDICIONES parC llaveA CUERPOMETODO llaveC CONTINAUCIONIF
-    |if parA CONDICIONES parC llaveA CUERPOMETODO llaveC
+IFS: if parA EXP parC llaveA CUERPOMETODO llaveC CONTINAUCIONIF
+    |if parA EXP parC llaveA CUERPOMETODO llaveC
 ;
 CONTINAUCIONIF: ELSEIF CONTINAUCIONIF
     | ELSES
     ;
 
 
-SWITCHS: switch parA CONDICIONES parC llaveA CUERPOSWITCH llaveC 
+SWITCHS: switch parA EXP parC llaveA CUERPOSWITCH llaveC 
 ;
 CUERPOSWITCH: case numeros dospts CUERPOMETODO CUERPOSWITCH
             | case numeros dospts CUERPOMETODO  
             | default dospts CUERPOMETODO
 ;
 
-ELSEIF: else if parA CONDICIONES parC llaveA CUERPOMETODO llaveC 
+ELSEIF: else if parA EXP parC llaveA CUERPOMETODO llaveC 
 ;
 
 ELSES: else llaveA CUERPOMETODO llaveC
 ;
 
-WHILES: while parA CONDICIONES parC llaveA CUERPOMETODO llaveC
+WHILES: while parA EXP parC llaveA CUERPOMETODO llaveC
 ;
 
-FORS: for parA DEC_VAR CONDICIONES ptcoma identificador INCRE parC llaveA CUERPOMETODO llaveC
-    | for parA INICIALIZACION  CONDICIONES ptcoma INICIALIZACION parC llaveA CUERPOMETODO llaveC
-    | for parA INICIALIZACION  CONDICIONES ptcoma identificador INCRE parC llaveA CUERPOMETODO llaveC
+FORS: for parA DEC_VAR EXP ptcoma identificador INCRE parC llaveA CUERPOMETODO llaveC
+    | for parA INICIALIZACION  EXP ptcoma INICIALIZACION parC llaveA CUERPOMETODO llaveC
+    | for parA INICIALIZACION  EXP ptcoma identificador INCRE parC llaveA CUERPOMETODO llaveC
 ;
 
-DOWHILE: do llaveA CUERPOMETODO llaveC while parA CONDICIONES parC ptcoma
+DOWHILE: do llaveA CUERPOMETODO llaveC while parA EXP parC ptcoma
 ;
 
 INCRE: mas mas
     |menos menos
-;
-CONDICIONES: EXP mayor EXP LOGICO CONDICIONES
-            | EXP menor EXP LOGICO CONDICIONES
-            | EXP igual igual EXP LOGICO CONDICIONES
-            | EXP mayorigual EXP LOGICO CONDICIONES
-            | EXP igualigual EXP LOGICO CONDICIONES
-            | EXP mayor EXP 
-            | EXP menor EXP
-            | EXP menorigual EXP    
-            | EXP mayorigual EXP
-            | EXP igual igual EXP
-            | EXP
 ;
 
 LOGICO: or
