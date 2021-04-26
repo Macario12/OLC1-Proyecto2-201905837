@@ -239,6 +239,9 @@ EXP:  EXP mas EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION
     | EXP mayorigual EXP{$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.MAYORIGUAL,this._$.first_line,this._$.first_column+1)}
     | EXP diferencia EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.DIFERENTE,this._$.first_line,this._$.first_column+1)}
     | EXP igualigual EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.IGUALIGUAL,this._$.first_line,this._$.first_column+1)}
+    | EXP or EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.OR,this._$.first_line,this._$.first_column+1)}
+    | EXP and EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.AND,this._$.first_line,this._$.first_column+1)}
+    | not EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($2, null, TIPO_OPERACION.NOT,this._$.first_line,this._$.first_column+1)}
 ;
 
 
