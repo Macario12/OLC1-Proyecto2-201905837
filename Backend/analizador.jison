@@ -108,7 +108,7 @@
 //EXPRESIONES REGULARES
 ([a-zA-Z])([a-zA-Z0-9_])* return 'identificador';
 ["\""]([^"\""])*["\""] return 'cadena';
-["\'"]([^"\""])["\'"] return 'caracter';
+\'[^\"]?\' return 'caracter';
 
 
 
@@ -153,38 +153,31 @@ CUERPO: DEC_VAR  {$$=$1}
     | FUNCIONES {$$=$1}
     | CALLS{$$=$1}
     | PRINT{$$=$1}
+    | WHILES{$$=$1}
+    | DOWHILE{$$=$1}
 ;
+ 
+OPCIONESMETODS: OPCIONESMETODS CUERPOMETODO {$1.push($2); $$=$1;}
+    | CUERPOMETODO {$$=[$1];}
+    ;
 
-CUERPOMETODO: IFS CUERPOMETODO
-    | DEC_VAR CUERPOMETODO
-    | INICIALIZACION ptcoma CUERPOMETODO
-    | DECLAVECT CUERPOMETODO
-    | MODDIFIC CUERPOMETODO
-    | DECLALIST CUERPOMETODO
-    | ADDLIST CUERPOMETODO
-    | break ptcoma CUERPOMETODO
-    | SWITCHS CUERPOMETODO
-    | WHILES CUERPOMETODO
-    | IFS
-    | DEC_VAR 
-    | INICIALIZACION ptcoma
-    | DECLAVECT
-    | MODDIFIC
-    | DECLALIST
-    | ADDLIST
-    | break ptcoma
-    | FORS CUERPOMETODO
-    | FORS
-    | DOWHILE CUERPOMETODO
-    | DOWHILE
-    | RETURN CUERPOMETODO
-    | RETURN
-    | continue CUERPOMETODO
-    | continue 
-    | LLAMADAS CUERPOMETODO
-    | LLAMADAS
-    | PRINT CUERPOMETODO
-    | PRINT
+CUERPOMETODO:  SWITCHS  {$$=$1}
+    | WHILES   {$$=$1}
+    | IFS  {$$=$1}
+    | DEC_VAR   {$$=$1}
+    | INICIALIZACION ptcoma CUERPOMETODO {$$=$1}
+    | INICIALIZACION{$$=$1}
+    | DECLAVECT  {$$=$1}
+    | MODDIFIC  {$$=$1}
+    | DECLALIST  {$$=$1}
+    | ADDLIST  {$$=$1}
+    | break ptcoma  {$$=$1}
+    | FORS  {$$=$1}
+    | DOWHILE  {$$=$1}
+    | RETURN  {$$=$1}
+    | continue   {$$=$1}
+    | LLAMADAS  {$$=$1}
+    | PRINT {$$=$1}
 ;
 
 DEC_VAR: TIPO identificador ptcoma { $$ = INSTRUCCION.nuevaDeclaracion($2,null, $1,this._$.first_line,this._$.first_column+1);}
@@ -297,7 +290,7 @@ ELSEIF: else if parA EXP parC llaveA CUERPOMETODO llaveC
 ELSES: else llaveA CUERPOMETODO llaveC
 ;
 
-WHILES: while parA EXP parC llaveA CUERPOMETODO llaveC
+WHILES: while parA EXP parC llaveA OPCIONESMETODS llaveC  {$$ = new INSTRUCCION.nuevoWhile($3, $6,this._$.first_line, this._$.first_column+1)}
 ;
 
 FORS: for parA DEC_VAR EXP ptcoma identificador INCRE parC llaveA CUERPOMETODO llaveC
@@ -305,7 +298,7 @@ FORS: for parA DEC_VAR EXP ptcoma identificador INCRE parC llaveA CUERPOMETODO l
     | for parA INICIALIZACION  EXP ptcoma identificador INCRE parC llaveA CUERPOMETODO llaveC
 ;
 
-DOWHILE: do llaveA CUERPOMETODO llaveC while parA EXP parC ptcoma
+DOWHILE: do llaveA OPCIONESMETODS llaveC while parA EXP parC ptcoma {$$ = new INSTRUCCION.nuevoDoWhile($7, $3,this._$.first_line, this._$.first_column+1)}
 ;
 
 INCRE: mas mas
@@ -317,12 +310,12 @@ LOGICO: or
     | not
 ;
 
-FUNCIONES: TIPO  identificador parA EXPRESIONES parC llaveA CUERPOMETODO llaveC
-    |  TIPO  identificador parA parC llaveA CUERPOMETODO llaveC
+FUNCIONES: TIPO  identificador parA EXPRESIONES parC llaveA OPCIONESMETODS llaveC
+    |  TIPO  identificador parA parC llaveA OPCIONESMETODS llaveC
 ;
 
-METODOS: void identificador parA EXPRESIONES parC llaveA CUERPOMETODO llaveC
-    | void identificador parA parC llaveA CUERPOMETODO llaveC
+METODOS: void identificador parA EXPRESIONES parC llaveA OPCIONESMETODS llaveC {$$=$1}
+    | void identificador parA parC llaveA OPCIONESMETODS llaveC  {$$=$6}
 ;
 
 //LLAMADAS
@@ -333,6 +326,7 @@ LLAMADAS: identificador parA EXPRESIONES parC
 CALLS: LLAMADAS ptcoma
 ;
 PRINT: print parA EXP parC ptcoma {$$ = new INSTRUCCION.nuevoPrint($3, this._$.first_line, this._$.first_column+1)}
+    | print parA parC ptcoma {$$ = new INSTRUCCION.nuevoPrint( INSTRUCCION.nuevoValor("", TIPO_VALOR.STRING, this._$.first_line,this._$.first_column+1) , this._$.first_line, this._$.first_column+1)}
 ;
 
 

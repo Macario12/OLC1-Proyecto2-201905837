@@ -42,8 +42,8 @@ function suma(_OpzIzq, _OpDer, _ambito){
     if(tipoRes!= null){
         if(tipoRes === TIPO_DATO.INT){
             var resultado = Number(opIzq.valor)+ Number(opDer.valor);
-            if(!Number(opIzq.valor)){resultado = opIzq.valor.charCodeAt() + Number(opDer.valor);}
-            if(!Number(opDer.valor)){resultado = Number(opIzq.valor) + opDer.valor.charCodeAt();}
+            if(!Number(opIzq.valor) && Number(opIzq.valor) != 0){resultado = opIzq.valor.charCodeAt() + Number(opDer.valor);}
+            if(!Number(opDer.valor) && Number(opDer.valor) != 0){resultado = Number(opIzq.valor) + opDer.valor.charCodeAt();}
             return{
                 valor: resultado,
                 tipo: tipoRes,
