@@ -72,6 +72,45 @@ const Instruccion ={
             linea: _linea,
             columna: _columna
         }
+    },
+
+    nuevoMetodo: function(_nombre, _lista_parametros, _instrucciones, _linea, _columna){
+        return{
+            tipo: TIPO_INSTRUCCION.DE_METODO,
+            nombre: _nombre,
+            lista_parametros: _lista_parametros,
+            instrucciones: _instrucciones,
+            linea: _linea,
+            columna: _columna
+        }
+    },
+    
+    nuevoExec: function(_nombre, _lista_valores, _linea, _columna){
+        return{
+            tipo: TIPO_INSTRUCCION.EXEC,
+            nombre: _nombre,
+            lista_valores: _lista_valores,
+            linea: _linea,
+            columna: _columna
+        }
+    },
+    nuevaLlamada: function(_nombre, _lista_valores, _linea, _columna){
+        return{
+            tipo: TIPO_INSTRUCCION.LLAMADA_METODO,
+            nombre: _nombre,
+            lista_valores: _lista_valores,
+            linea: _linea,
+            columna: _columna
+        }
+    },
+    nuevoIf: function(_expresion, _instrucciones, _linea, _columna){
+        return{
+            tipo: TIPO_INSTRUCCION.IF,
+            expresion: _expresion,
+            instrucciones: _instrucciones,
+            linea: _linea,
+            columna: _columna
+        }
     }
 
 }

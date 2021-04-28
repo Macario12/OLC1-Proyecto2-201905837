@@ -10,7 +10,7 @@
                             <mat-card-title>Editor</mat-card-title>
                             
                           </mat-card-header>
-                          <mat-card-content>
+                          <mat-card-content>    
                             <div style="width: auto; height: 500px;">
                                 <ngx-monaco-editor [formControl]="editorTexto" [options]="editorOptions"
                                     [(ngModel)]="code" (init)="editorInit($event)"></ngx-monaco-editor>

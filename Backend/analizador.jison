@@ -151,10 +151,8 @@ CUERPO: DEC_VAR  {$$=$1}
     | METODOS{$$=$1}
     | INICIALIZACION{$$=$1}
     | FUNCIONES {$$=$1}
-    | CALLS{$$=$1}
-    | PRINT{$$=$1}
-    | WHILES{$$=$1}
-    | DOWHILE{$$=$1}
+    | PRINT{$$=$1}  
+    | EXEC {$$=$1}
 ;
  
 OPCIONESMETODS: OPCIONESMETODS CUERPOMETODO {$1.push($2); $$=$1;}
@@ -176,7 +174,7 @@ CUERPOMETODO:  SWITCHS  {$$=$1}
     | DOWHILE  {$$=$1}
     | RETURN  {$$=$1}
     | continue   {$$=$1}
-    | LLAMADAS  {$$=$1}
+    | CALLS {$$=$1}
     | PRINT {$$=$1}
 ;
 
@@ -269,8 +267,8 @@ DECLALIST: list menor TIPO mayor identificador igual new  list menor TIPO mayor 
 ADDLIST: identificador punto add parA EXP parC ptcoma
 ;
 
-IFS: if parA EXP parC llaveA CUERPOMETODO llaveC CONTINAUCIONIF
-    |if parA EXP parC llaveA CUERPOMETODO llaveC
+IFS: if parA EXP parC llaveA OPCIONESMETODS llaveC CONTINAUCIONIF
+    |if parA EXP parC llaveA OPCIONESMETODS llaveC {$$ = new INSTRUCCION.nuevoIf($3, $6,this._$.first_line, this._$.first_column+1)}
 ;
 CONTINAUCIONIF: ELSEIF CONTINAUCIONIF
     | ELSES
@@ -314,16 +312,16 @@ FUNCIONES: TIPO  identificador parA EXPRESIONES parC llaveA OPCIONESMETODS llave
     |  TIPO  identificador parA parC llaveA OPCIONESMETODS llaveC
 ;
 
-METODOS: void identificador parA EXPRESIONES parC llaveA OPCIONESMETODS llaveC {$$=$1}
-    | void identificador parA parC llaveA OPCIONESMETODS llaveC  {$$=$6}
+METODOS: void identificador parA EXPRESIONES parC llaveA OPCIONESMETODS llaveC {$$ = INSTRUCCION.nuevoMetodo($2, $4, $7 , this._$.first_line, this._$.first_column+1 )}
+    | void identificador parA parC llaveA OPCIONESMETODS llaveC  {$$ = INSTRUCCION.nuevoMetodo($2, null, $6 , this._$.first_line, this._$.first_column+1 )}
 ;
 
 //LLAMADAS
 
-LLAMADAS: identificador parA EXPRESIONES parC 
-    | identificador parA parC 
+LLAMADAS: identificador parA EXPRESIONES parC {$$= INSTRUCCION.nuevaLlamada($1, $3, this._$.first_line, this._$.first_column+1)}
+    | identificador parA parC  {$$= INSTRUCCION.nuevaLlamada($1, null, this._$.first_line, this._$.first_column+1)}
 ;
-CALLS: LLAMADAS ptcoma
+CALLS: LLAMADAS ptcoma {$$ = $1}
 ;
 PRINT: print parA EXP parC ptcoma {$$ = new INSTRUCCION.nuevoPrint($3, this._$.first_line, this._$.first_column+1)}
     | print parA parC ptcoma {$$ = new INSTRUCCION.nuevoPrint( INSTRUCCION.nuevoValor("", TIPO_VALOR.STRING, this._$.first_line,this._$.first_column+1) , this._$.first_line, this._$.first_column+1)}
@@ -346,5 +344,5 @@ TOSTRING: tostring parA EXP parC
 ;
 TOCHARARRAY: tochararray parA EXP parC
 ;
-EXEC: exec LLAMADAS
+EXEC: exec identificador parA parC ptcoma  {$$ = INSTRUCCION.nuevoExec($2,null, this._$.first_line, this._$.first_column+1)}
 ;
