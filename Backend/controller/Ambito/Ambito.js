@@ -1,72 +1,80 @@
-class Ambito{
-    constructor(_anterior){
-        this.anterior = _anterior;
-        this.tablaSimbolos = new Map();
-        this.tablaMetodos = new Map();   
+class Ambito {
+  constructor(_anterior) {
+    this.anterior = _anterior;
+    this.tablaSimbolos = new Map();
+    this.tablaMetodos = new Map();
+  }
 
+  addSimbolo(_s, _simbolo) {
+    this.tablaSimbolos.set(_s.toLowerCase(), _simbolo);
+  }
+
+  addMetodo(_s, _metodo) {
+    this.tablaMetodos.set(_s.toLowerCase(), _metodo);
+  }
+
+  getSimbolo(_s) {
+    for (let e = this; e != null; e = e.anterior) {
+      var encontrado = e.tablaSimbolos.get(_s.toLowerCase());
+      if (encontrado != null) {
+        return encontrado;
+      }
     }
 
-    addSimbolo(_s, _simbolo){
-        this.tablaSimbolos.set(_s.toLowerCase(), _simbolo)
+    return null;
+  }
+
+  getMetodo(_s) {
+    for (let e = this; e != null; e = e.anterior) {
+      var encontrado = e.tablaMetodos.get(_s.toLowerCase());
+      if (encontrado != null) {
+        return encontrado;
+      }
     }
 
-    addMetodo(_s, _metodo){
-        this.tablaMetodos.set(_s.toLowerCase(), _metodo)
+    return null;
+  }
+
+  existeSimbolo(_s) {
+    for (let e = this; e != null; e = e.anterior) {
+      var encontrado = e.tablaSimbolos.get(_s.toLowerCase());
+      if (encontrado != null) {
+        return true;
+      }
     }
 
-    getSimbolo(_s){
-        for( let e = this;  e!= null; e=e.anterior){
-            var encontrado = e.tablaSimbolos.get(_s.toLowerCase())
-            if(encontrado != null){
-                return encontrado 
-            }
-        }
-
-        return null
+    return false;
+  }
+  existeSimboloAmbitoActual(_s) {
+    var encontrado = this.tablaSimbolos.get(_s.toLowerCase());
+    if (encontrado != null) {
+      return true;
     }
 
-    getMetodo(_s){
-        for( let e = this;  e!= null; e=e.anterior){
-            var encontrado = e.tablaMetodos.get(_s.toLowerCase())
-            if(encontrado != null){
-                return encontrado 
-            }
-        }
+    return false;
+  }
 
-        return null
+  existeMetodo(_s) {
+    for (let e = this; e != null; e = e.anterior) {
+      var encontrado = e.tablaMetodos.get(_s.toLowerCase());
+      if (encontrado != null) {
+        return true;
+      }
     }
 
-    existeSimbolo(_s){
-        for( let e = this;  e!= null; e=e.anterior){
-            var encontrado = e.tablaSimbolos.get(_s.toLowerCase())
-            if(encontrado != null){
-                return true 
-            }
-        }
+    return false;
+  }
 
-        return false
+  actualizar(_s, _simbolo) {
+    for (let e = this; e != null; e = e.anterior) {
+      var encontrado = e.tablaSimbolos.get(_s.toLowerCase());
+      if (encontrado != null) {
+        e.tablaSimbolos.set(_s, _simbolo);
+        return true;
+      }
     }
-    existeMetodo(_s){
-        for( let e = this;  e!= null; e=e.anterior){
-            var encontrado = e.tablaMetodos.get(_s.toLowerCase())
-            if(encontrado != null){
-                return true 
-            }
-        }
-
-        return false
-    }
-
-    actualizar(_s, _simbolo){
-        for ( let e=this; e!= null; e=e.anterior){
-            var encontrado = e.tablaSimbolos.get(_s.toLowerCase());
-            if(encontrado != null){
-                e.tablaSimbolos.set(_s, _simbolo)
-                return true;
-            }
-        }
-        return false
-    }
+    return false;
+  }
 }
 
-module.exports = Ambito
+module.exports = Ambito;

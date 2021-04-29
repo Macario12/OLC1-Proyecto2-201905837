@@ -241,18 +241,14 @@ DECLAVECT: TIPO corA corC identificador igual new TIPO corA numeros corC
         | TIPO corA corC identificador igual llaveA EXPRESIONES llaveC
 ;
 
-EXPRESIONES:  cadena coma EXPRESIONES
-            | numeros coma EXPRESIONES
-            | caracter coma EXPRESIONES
-            | DEC_VAR coma EXPRESIONES
-            | identificador coma EXPRESIONES
-            | DEC_VAR
-            | identificador
-            | caracter
-            | cadena
-            | numeros
+LISTAVALORES: LISTAVALORES coma EXP {$1.push($3); $$=$1}
+    | EXP {$$=[$1]}
 ;
-
+LISTAPARAMETROS: LISTAPARAMETROS coma PARAMETROS {$1.push($3); $$=$1;}
+    | PARAMETROS {$$=[$1];}
+    ;
+PARAMETROS: TIPO identificador { $$ = INSTRUCCION.nuevaDeclaracion($2,null, $1,this._$.first_line,this._$.first_column+1);}
+;
 ACCESS: identificador corA numeros corC
     | identificador corA corA numeros corC corC 
 
@@ -308,17 +304,17 @@ LOGICO: or
     | not
 ;
 
-FUNCIONES: TIPO  identificador parA EXPRESIONES parC llaveA OPCIONESMETODS llaveC
+FUNCIONES: TIPO  identificador parA LISTAPARAMETROS parC llaveA OPCIONESMETODS llaveC
     |  TIPO  identificador parA parC llaveA OPCIONESMETODS llaveC
 ;
 
-METODOS: void identificador parA EXPRESIONES parC llaveA OPCIONESMETODS llaveC {$$ = INSTRUCCION.nuevoMetodo($2, $4, $7 , this._$.first_line, this._$.first_column+1 )}
+METODOS: void identificador parA LISTAPARAMETROS parC llaveA OPCIONESMETODS llaveC {$$ = INSTRUCCION.nuevoMetodo($2, $4, $7 , this._$.first_line, this._$.first_column+1 )}
     | void identificador parA parC llaveA OPCIONESMETODS llaveC  {$$ = INSTRUCCION.nuevoMetodo($2, null, $6 , this._$.first_line, this._$.first_column+1 )}
 ;
 
 //LLAMADAS
 
-LLAMADAS: identificador parA EXPRESIONES parC {$$= INSTRUCCION.nuevaLlamada($1, $3, this._$.first_line, this._$.first_column+1)}
+LLAMADAS: identificador parA LISTAVALORES parC {$$= INSTRUCCION.nuevaLlamada($1, $3, this._$.first_line, this._$.first_column+1)}
     | identificador parA parC  {$$= INSTRUCCION.nuevaLlamada($1, null, this._$.first_line, this._$.first_column+1)}
 ;
 CALLS: LLAMADAS ptcoma {$$ = $1}
@@ -345,4 +341,5 @@ TOSTRING: tostring parA EXP parC
 TOCHARARRAY: tochararray parA EXP parC
 ;
 EXEC: exec identificador parA parC ptcoma  {$$ = INSTRUCCION.nuevoExec($2,null, this._$.first_line, this._$.first_column+1)}
+    | exec identificador parA LISTAVALORES parC ptcoma  {$$ = INSTRUCCION.nuevoExec($2,$4, this._$.first_line, this._$.first_column+1)}
 ;
