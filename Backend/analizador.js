@@ -117,7 +117,7 @@ case 49:
 this.$= TIPO_DATO.BOOLEAN
 break;
 case 50:
-this.$ =TIPO_DATO.DOUBLE
+this.$ =TIPO_DATO.INT
 break;
 case 51:
 this.$ = TIPO_DATO.INT

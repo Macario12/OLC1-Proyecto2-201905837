@@ -25,31 +25,31 @@ function Bloque(_instrucciones, _ambito) {
       var message = Declaracion(instruccion, _ambito);
 
       if (message != null) {
-        cadena += message + "\n";
+        cadena += message
       }
     } else if (instruccion.tipo === TIPO_INSTRUCCION.ASIGNACION) {
       var mensaje = Asignacion(instruccion, _ambito);
       if (mensaje != null) {
-        cadena += mensaje + "\n";
+        cadena += mensaje ;
       }
     } else if (instruccion.tipo === TIPO_INSTRUCCION.WHILE) {
       var mensaje = CicloWhile(instruccion, _ambito);
       haybreak = false
       if (mensaje != null) {
-        cadena += mensaje + "\n";
+        cadena += mensaje ;
       }
     } else if (instruccion.tipo === TIPO_INSTRUCCION.DOWHILE) {
       var mensaje = CicloDoWhile(instruccion, _ambito);
 
       if (mensaje != null) {
-        cadena += mensaje + "\n";
+        cadena += mensaje ;
       }
     } else if (instruccion.tipo === TIPO_INSTRUCCION.LLAMADA_METODO) {
       const Exec = require("./Exec");
       var mensaje = Exec(instruccion, _ambito);
 
       if (mensaje != null) {
-        cadena += mensaje + "\n";
+        cadena += mensaje;
       }
     } else if (instruccion.tipo === TIPO_INSTRUCCION.IF) {
         

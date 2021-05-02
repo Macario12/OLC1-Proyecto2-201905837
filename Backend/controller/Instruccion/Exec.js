@@ -32,7 +32,7 @@ function Exec(_isntruccion, _ambito) {
 
           if (message != null) {
             error = true;
-            cadena += message + "\n";
+            cadena += message;
           }
         }
         if (error) {

@@ -206,7 +206,7 @@ CASTEO: parA TIPO parC EXP
 ;
 TIPO: char {$$ = TIPO_DATO.CHAR}
     | boolean {$$= TIPO_DATO.BOOLEAN}
-    | double {$$ =TIPO_DATO.DOUBLE}
+    | double {$$ =TIPO_DATO.INT}
     | int {$$ = TIPO_DATO.INT}
     | string {$$ = TIPO_DATO.STRING}
 ;

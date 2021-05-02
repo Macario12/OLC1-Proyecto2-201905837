@@ -63,7 +63,7 @@ function Declaracion(_instruccion, _ambito){
                 valor = Number(op.valor);
             }
             else{
-                "Error: No es posible asignar un valor de tipo "+tipo+" a la variable \n'"+ _instruccion.id +"' que es de tipo "+TIPO_DATO.DECIMAL+"... Linea: "+_instruccion.linea+" Columna: "+ _instruccion.columna;
+                "Error: No es posible asignar un valor de tipo "+tipo+" a la variable \n'"+ _instruccion.id +"' que es de tipo "+TIPO_DATO.DOUBLE+"... Linea: "+_instruccion.linea+" Columna: "+ _instruccion.columna;
             }
         }
 
