@@ -7,7 +7,7 @@ const Instruccion = require("./Instruccion");
 function Exec(_isntruccion, _ambito) {
   var cadena = "";
   var metodoEjecutar = _ambito.getMetodo(_isntruccion.nombre);
-
+  //console.log(metodoEjecutar.instrucciones)
   if (metodoEjecutar != null) {
     var nuevoAmbito = new Ambito(_ambito);
     if (metodoEjecutar.lista_parametros != null) {
@@ -38,14 +38,25 @@ function Exec(_isntruccion, _ambito) {
         if (error) {
           return cadena;
         }
-        return Bloque(metodoEjecutar.instrucciones, nuevoAmbito);
+        var ejec = Bloque(metodoEjecutar.instrucciones, nuevoAmbito);
+        var mensaje = ejec.cadena;
+        if (ejec.hayBreak) {
+          mensaje += "Se ha encontrado un break fuera de un ciclo";
+        }
+        return mensaje;
+        //return Bloque(metodoEjecutar.instrucciones, nuevoAmbito);
       } else {
-        return `Error: Faltan valores para el metodo ${_instruccion.nombre}... Linea: ${_instruccion.linea} Columna: ${_instruccion.columna}`;
+        return `Error: Faltan valores para el metodo ${_isntruccion.nombre}... Linea: ${_isntruccion.linea} Columna: ${_isntruccion.columna}`;
       }
     } else {
-      return Bloque(metodoEjecutar.instrucciones, nuevoAmbito);
+      var ejec = Bloque(metodoEjecutar.instrucciones, nuevoAmbito);
+      var mensaje = ejec.cadena;
+      if (ejec.hayBreak) {
+        mensaje += "Se ha encontrado un break fuera de un ciclo";
+      }
+      return mensaje;
     }
   }
-  return `Error: El método ${_instruccion.nombre} no existe... Linea: ${_instruccion.linea} Columna: ${_instruccion.columna}`;
+  return `Error: El método ${_isntruccion.nombre} no existe... Linea: ${_isntruccion.linea} Columna: ${_isntruccion.columna}`;
 }
 module.exports = Exec;

@@ -111,6 +111,43 @@ const Instruccion ={
             linea: _linea,
             columna: _columna
         }
+    },
+    nuevoBreak: function(_linea, _columna){
+        return{
+            tipo: TIPO_INSTRUCCION.BREAK,
+            linea: _linea,
+            columna: _columna
+        }
+    },
+    nuevoIfElse: function(_expresion, _instruccionesif,_instruccioneselse, _linea, _columna){
+        return{
+            tipo: TIPO_INSTRUCCION.IFELSE,
+            expresion: _expresion,
+            instruccionesIf: _instruccionesif,
+            instruccionesElse: _instruccioneselse,
+            linea: _linea,
+            columna: _columna
+        }
+    },
+    nuevoElseIf: function(_expresion, _instruccionesElseIf, _linea, _columna){
+        return {
+            tipo: TIPO_INSTRUCCION.ELSEIF,
+			expresion: _expresion,
+			instruccionesElseIf: _instruccionesElseIf,
+            linea: _linea,
+            columna: _columna
+		}
+    },
+    nuevoIfConElseIf: function(_expresion, _instruccionesIf, _lista_elseif, _instruccionesElse, _linea, _columna){
+        return {
+            tipo: TIPO_INSTRUCCION.IFCELSEIF,
+            expresion: _expresion,
+            instruccionesIf: _instruccionesIf,
+            lista_elseif: _lista_elseif,
+            instruccionesElse: _instruccionesElse,
+            linea: _linea,
+            columna: _columna
+        }
     }
 
 }

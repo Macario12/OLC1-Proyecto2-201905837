@@ -3,7 +3,7 @@ const TIPO_DATO = require("../Enums/TipoDato")
 const Operacion = require("../Operacion/Operacion")
 
 
-function SentenciaIf(_instruccion, _ambito){
+function SentenciaIfElse(_instruccion, _ambito){
     var mensaje = ""
     var hayBreak = false
     var operacion = Operacion(_instruccion.expresion, _ambito)
@@ -11,11 +11,18 @@ function SentenciaIf(_instruccion, _ambito){
         if(operacion.valor){
             const Bloque = require("./Bloque")
             var nuevoambito = new Ambito(_ambito)
-            var ejec = Bloque(_instruccion.instrucciones,nuevoambito)
+            var ejec = Bloque(_instruccion.instruccionesIf,nuevoambito)
             hayBreak = ejec.hayBreak;
             //mensaje += Bloque(_instruccion.instrucciones, nuevoambito)
             mensaje += ejec.cadena
            
+        }else{
+            const Bloque = require("./Bloque")
+            var nuevoambito = new Ambito(_ambito)
+            var ejec = Bloque(_instruccion.instruccionesElse,nuevoambito)
+            hayBreak = ejec.hayBreak;
+            //mensaje += Bloque(_instruccion.instrucciones, nuevoambito)
+            mensaje += ejec.cadena
         }
         return{
             hayBreak: hayBreak,
@@ -27,4 +34,4 @@ function SentenciaIf(_instruccion, _ambito){
         cadena: `Error: No es una condicion válida para el if... Linea: ${_instruccion.linea} Columna: ${_instruccion.columna}`
     }
 }
-module.exports = SentenciaIf    
+module.exports = SentenciaIfElse    

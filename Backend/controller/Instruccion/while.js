@@ -10,14 +10,14 @@ function CicloWhile(_instruccion, _ambito){
         while(operacion.valor){
             var nuevoAmbito = new Ambito(_ambito)
             const Bloque = require('./Bloque')
-            mensaje += Bloque(_instruccion.instrucciones, nuevoAmbito)
-           /* var ejec =Bloque(_instruccion.instrucciones, nuevoAmbito)
+            //mensaje += Bloque(_instruccion.instrucciones, nuevoAmbito)
+            var ejec =Bloque(_instruccion.instrucciones, nuevoAmbito)
             mensaje+=ejec.cadena
             if(ejec.hayBreak){
                 return mensaje
             
             //UPDATE
-            }*/
+            }
             
             operacion = Operacion(_instruccion.expresion, _ambito)
         }

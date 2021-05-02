@@ -4,12 +4,21 @@ const Asignacion = require("./Asignacion");
 const Declaracion = require("./Declaracion");
 const CicloDoWhile = require("./Dowhile");
 const SentenciaIf = require("./if");
+const SentenciaIfElse = require("./IfElse");
+const SentenciaIfElseIF = require("./IfElseIf");
 const Print = require("./Print");
 const CicloWhile = require("./while");
 
 function Bloque(_instrucciones, _ambito) {
   var cadena = "";
+  var haybreak = false;
   _instrucciones.forEach((instruccion) => {
+    if(haybreak){
+      return {
+        hayBreak: haybreak,
+        cadena: cadena
+      }
+    }
     if (instruccion.tipo === TIPO_INSTRUCCION.PRINT) {
       cadena += Print(instruccion, _ambito) + "\n";
     } else if (instruccion.tipo === TIPO_INSTRUCCION.DECLARACION) {
@@ -25,7 +34,7 @@ function Bloque(_instrucciones, _ambito) {
       }
     } else if (instruccion.tipo === TIPO_INSTRUCCION.WHILE) {
       var mensaje = CicloWhile(instruccion, _ambito);
-
+      haybreak = false
       if (mensaje != null) {
         cadena += mensaje + "\n";
       }
@@ -43,8 +52,35 @@ function Bloque(_instrucciones, _ambito) {
         cadena += mensaje + "\n";
       }
     } else if (instruccion.tipo === TIPO_INSTRUCCION.IF) {
-        const Exec = require("./Exec");
-        var mensaje = SentenciaIf(instruccion, _ambito);
+        
+        var ejec = SentenciaIf(instruccion, _ambito);
+        var mensaje = ejec.cadena
+        haybreak = ejec.hayBreak
+  
+        if (mensaje != null) {
+          cadena += mensaje
+        }
+      }
+      else if (instruccion.tipo === TIPO_INSTRUCCION.BREAK) {
+        haybreak = true;
+        return {
+          hayBreak: haybreak,
+          cadena: cadena
+        }
+      }else if (instruccion.tipo === TIPO_INSTRUCCION.IFELSE) {
+        
+        var ejec = SentenciaIfElse(instruccion, _ambito);
+        var mensaje = ejec.cadena
+        haybreak = ejec.hayBreak
+  
+        if (mensaje != null) {
+          cadena += mensaje
+        }
+      }else if (instruccion.tipo === TIPO_INSTRUCCION.IFCELSEIF) {
+        
+        var ejec = SentenciaIfElseIF(instruccion, _ambito);
+        var mensaje = ejec.cadena
+        haybreak = ejec.hayBreak
   
         if (mensaje != null) {
           cadena += mensaje
@@ -52,7 +88,10 @@ function Bloque(_instrucciones, _ambito) {
       }
   });
 
-  return cadena;
+  return {
+    hayBreak: haybreak,
+    cadena: cadena
+  }
 }
 
 module.exports = Bloque;

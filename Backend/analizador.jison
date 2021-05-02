@@ -26,7 +26,9 @@
 
 "new"               return 'new';
     
-
+"=="                   return 'igualigual'
+"++"                    return 'masmas';
+"--"                    return 'menosmenos';
 ">="                   return 'mayorigual';
 "<="                   return 'menorigual';
 "!="                  return 'diferencia';
@@ -37,7 +39,6 @@
 "list"              return 'list';
 "add"               return 'add';
 "."                 return 'punto';
-"=="                   return 'igualigual'
 //SIMBOLOS ARITMETICOS
 "+"                   return 'mas';
 "*"                   return 'multi';
@@ -169,7 +170,7 @@ CUERPOMETODO:  SWITCHS  {$$=$1}
     | MODDIFIC  {$$=$1}
     | DECLALIST  {$$=$1}
     | ADDLIST  {$$=$1}
-    | break ptcoma  {$$=$1}
+    | BREAK {$$=$1}
     | FORS  {$$=$1}
     | DOWHILE  {$$=$1}
     | RETURN  {$$=$1}
@@ -177,7 +178,8 @@ CUERPOMETODO:  SWITCHS  {$$=$1}
     | CALLS {$$=$1}
     | PRINT {$$=$1}
 ;
-
+BREAK:  break ptcoma  {$$ = INSTRUCCION.nuevoBreak(this._$.first_line,this._$.first_column+1)}
+;
 DEC_VAR: TIPO identificador ptcoma { $$ = INSTRUCCION.nuevaDeclaracion($2,null, $1,this._$.first_line,this._$.first_column+1);}
         | TIPO identificador igual EXP ptcoma { $$ = INSTRUCCION.nuevaDeclaracion($2,$4, $1,this._$.first_line,this._$.first_column+1);}
         | TIPO identificador igual CASTEO ptcoma
@@ -232,7 +234,9 @@ EXP:  EXP mas EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION
     | EXP igualigual EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.IGUALIGUAL,this._$.first_line,this._$.first_column+1)}
     | EXP or EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.OR,this._$.first_line,this._$.first_column+1)}
     | EXP and EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($1, $3, TIPO_OPERACION.AND,this._$.first_line,this._$.first_column+1)}
-    | not EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($2, null, TIPO_OPERACION.NOT,this._$.first_line,this._$.first_column+1)}
+    | not EXP {$$ = INSTRUCCION.nuevaOperacionBinaria($2, null, TIPO_OPERACION.NOT,this._$.first_line,this._$.first_column+1)}}
+    | identificador masmas {$$ = INSTRUCCION.nuevaOperacionBinaria(INSTRUCCION.nuevoValor($1, TIPO_VALOR.IDENTIFICADOR, this._$.first_line,this._$.first_column+1), INSTRUCCION.nuevoValor(1, TIPO_VALOR.INT, this._$.first_line,this._$.first_column+1), TIPO_OPERACION.SUMA,this._$.first_line,this._$.first_column+1)}}
+    | identificador menosmenos {$$ = INSTRUCCION.nuevaOperacionBinaria(INSTRUCCION.nuevoValor($1, TIPO_VALOR.IDENTIFICADOR, this._$.first_line,this._$.first_column+1), INSTRUCCION.nuevoValor(1, TIPO_VALOR.INT, this._$.first_line,this._$.first_column+1), TIPO_OPERACION.RESTA,this._$.first_line,this._$.first_column+1)}}
 ;
 
 
@@ -263,13 +267,18 @@ DECLALIST: list menor TIPO mayor identificador igual new  list menor TIPO mayor 
 ADDLIST: identificador punto add parA EXP parC ptcoma
 ;
 
-IFS: if parA EXP parC llaveA OPCIONESMETODS llaveC CONTINAUCIONIF
-    |if parA EXP parC llaveA OPCIONESMETODS llaveC {$$ = new INSTRUCCION.nuevoIf($3, $6,this._$.first_line, this._$.first_column+1)}
+IFS: if parA EXP parC llaveA OPCIONESMETODS llaveC  {$$ = new INSTRUCCION.nuevoIf($3, $6,this._$.first_line, this._$.first_column+1)}
+    |if parA EXP parC llaveA OPCIONESMETODS llaveC else llaveA OPCIONESMETODS llaveC {$$ = new INSTRUCCION.nuevoIfElse($3, $6,$10,this._$.first_line, this._$.first_column+1)}
+    | if parA EXP parC llaveA OPCIONESMETODS llaveC ELSEIFS {$$ = new INSTRUCCION.nuevoIfConElseIf($3, $6,$8,null,this._$.first_line, this._$.first_column+1 )}
+    | if parA EXP parC llaveA OPCIONESMETODS llaveC ELSEIFS else llaveA OPCIONESMETODS llaveC {$$ = new INSTRUCCION.nuevoIfConElseIf($3, $6,$8,$11,this._$.first_line, this._$.first_column+1 )}
 ;
-CONTINAUCIONIF: ELSEIF CONTINAUCIONIF
-    | ELSES
-    ;
 
+ELSEIFS: ELSEIFS CONELSEIF {$1.push($2); $$=$1}
+    |CONELSEIF {$$=[$1];}
+;
+
+CONELSEIF: else if parA EXP parC llaveA OPCIONESMETODS llaveC {$$ = new INSTRUCCION.nuevoElseIf($4, $7,this._$.first_line, this._$.first_column+1)}
+;
 
 SWITCHS: switch parA EXP parC llaveA CUERPOSWITCH llaveC 
 ;
@@ -281,23 +290,19 @@ CUERPOSWITCH: case numeros dospts CUERPOMETODO CUERPOSWITCH
 ELSEIF: else if parA EXP parC llaveA CUERPOMETODO llaveC 
 ;
 
-ELSES: else llaveA CUERPOMETODO llaveC
-;
 
 WHILES: while parA EXP parC llaveA OPCIONESMETODS llaveC  {$$ = new INSTRUCCION.nuevoWhile($3, $6,this._$.first_line, this._$.first_column+1)}
 ;
 
-FORS: for parA DEC_VAR EXP ptcoma identificador INCRE parC llaveA CUERPOMETODO llaveC
+FORS: for parA DEC_VAR  EXP ptcoma EXP parC llaveA CUERPOMETODO llaveC
     | for parA INICIALIZACION  EXP ptcoma INICIALIZACION parC llaveA CUERPOMETODO llaveC
-    | for parA INICIALIZACION  EXP ptcoma identificador INCRE parC llaveA CUERPOMETODO llaveC
+    | for parA INICIALIZACION  EXP ptcoma EXP parC llaveA CUERPOMETODO llaveC
 ;
 
 DOWHILE: do llaveA OPCIONESMETODS llaveC while parA EXP parC ptcoma {$$ = new INSTRUCCION.nuevoDoWhile($7, $3,this._$.first_line, this._$.first_column+1)}
 ;
 
-INCRE: mas mas
-    |menos menos
-;
+
 
 LOGICO: or
     | and

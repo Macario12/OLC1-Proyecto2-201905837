@@ -7,7 +7,12 @@ const TIPO_INSTRUCCION={
     DE_METODO: 'DEC_METODO',
     EXEC: 'EXEC',
     LLAMADA_METODO: 'LLAMADA_METODO',
-    IF: 'IF'
+    IF: 'IF',
+    FOR: 'FOR',
+    BREAK: 'BREAK',
+    IFELSE: 'IFELSE',
+    IFCELSEIF: 'IFCELSEIF',
+    ELSEIF: 'ELSEIF'
 }
 
 module.exports = TIPO_INSTRUCCION
