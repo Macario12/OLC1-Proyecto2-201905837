@@ -64,6 +64,16 @@ const Instruccion ={
         }
     },
 
+    nuevoFor: function(_expresion, _instrucciones, _linea, _columna){
+        return {
+            tipo: TIPO_INSTRUCCION.FOR,
+            expresion: _expresion,
+            instrucciones: _instrucciones,
+            linea: _linea,
+            columna: _columna 
+        }
+    },
+
     nuevoDoWhile: function(_expresion, _instrucciones, _linea, _columna){
         return {
             tipo: TIPO_INSTRUCCION.DOWHILE,
@@ -148,8 +158,35 @@ const Instruccion ={
             linea: _linea,
             columna: _columna
         }
-    }
-
+    },
+    nuevoSwitchConCase: function(_expresion, _lista_cases, _instruccionesDefault, _linea, _columna){
+        return {
+            tipo: TIPO_INSTRUCCION.CCASES,
+            expresion: _expresion,
+            lista_cases: _lista_cases,
+            instruccionesDefault: _instruccionesDefault,
+            linea: _linea,
+            columna: _columna
+        }
+    },
+    nuevoCase: function(_expresion, _instruccionescase, _linea, _columna){
+        return {
+            tipo: TIPO_INSTRUCCION.CASE,
+			expresion: _expresion,
+			instruccionescase: _instruccionescase,
+            linea: _linea,
+            columna: _columna
+		}
+    },
+    nuevoSwitchDefault: function(_expresion,_instruccionDefault, _linea, _columna){
+        return{
+            tipo: TIPO_INSTRUCCION.SWDEFAULT,
+            expresion: _expresion,
+            instruccionDefault: _instruccionDefault,
+            linea: _linea,
+            columna: _columna
+        }
+    },
 }
 
 module.exports = Instruccion

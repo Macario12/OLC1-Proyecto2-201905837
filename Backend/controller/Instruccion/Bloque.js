@@ -3,10 +3,13 @@ const TIPO_INSTRUCCION = require("../Enums/TipoInstruccion");
 const Asignacion = require("./Asignacion");
 const Declaracion = require("./Declaracion");
 const CicloDoWhile = require("./Dowhile");
+const For = require("./For");
 const SentenciaIf = require("./if");
 const SentenciaIfElse = require("./IfElse");
 const SentenciaIfElseIF = require("./IfElseIf");
 const Print = require("./Print");
+const SentenciaSwtchCase = require("./SwitchCase");
+const SentenciaSwitchD = require("./SwitchDefault");
 const CicloWhile = require("./while");
 
 function Bloque(_instrucciones, _ambito) {
@@ -38,7 +41,13 @@ function Bloque(_instrucciones, _ambito) {
       if (mensaje != null) {
         cadena += mensaje ;
       }
-    } else if (instruccion.tipo === TIPO_INSTRUCCION.DOWHILE) {
+    } else if (instruccion.tipo === TIPO_INSTRUCCION.FOR) {
+      var mensaje = For(instruccion, _ambito);
+      haybreak = false
+      if (mensaje != null) {
+        cadena += mensaje ;
+      }
+    }else if (instruccion.tipo === TIPO_INSTRUCCION.DOWHILE) {
       var mensaje = CicloDoWhile(instruccion, _ambito);
 
       if (mensaje != null) {
@@ -79,6 +88,24 @@ function Bloque(_instrucciones, _ambito) {
       }else if (instruccion.tipo === TIPO_INSTRUCCION.IFCELSEIF) {
         
         var ejec = SentenciaIfElseIF(instruccion, _ambito);
+        var mensaje = ejec.cadena
+        haybreak = ejec.hayBreak
+  
+        if (mensaje != null) {
+          cadena += mensaje
+        }
+      }else if (instruccion.tipo === TIPO_INSTRUCCION.SWDEFAULT) {
+        console.log(instruccion)
+        var ejec = SentenciaSwitchD(instruccion, _ambito);
+        var mensaje = ejec.cadena
+        haybreak = ejec.hayBreak
+  
+        if (mensaje != null) {
+          cadena += mensaje
+        }
+      }else if (instruccion.tipo === TIPO_INSTRUCCION.CCASES) {
+        //console.log(instruccion)
+        var ejec = SentenciaSwtchCase(instruccion, _ambito);
         var mensaje = ejec.cadena
         haybreak = ejec.hayBreak
   

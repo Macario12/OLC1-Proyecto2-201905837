@@ -200,6 +200,8 @@ RETURN: return EXP ptcoma
 ;
 
 INICIALIZACION: identificador igual EXP ptcoma {$$=INSTRUCCION.nuevaAsignacion($1,$3,this._$.first_line,this._$.first_column+1 )}
+    | identificador menosmenos ptcoma{ $$ = INSTRUCCION.nuevaAsignacion($1,INSTRUCCION.nuevaOperacionBinaria(INSTRUCCION.nuevoValor($1, TIPO_VALOR.IDENTIFICADOR, this._$.first_line,this._$.first_column+1), INSTRUCCION.nuevoValor(1, TIPO_VALOR.INT, this._$.first_line,this._$.first_column+1), TIPO_OPERACION.RESTA,this._$.first_line,this._$.first_column+1),this._$.first_line,this._$.first_column+1);}
+    | identificador masmas ptcoma{ $$ = INSTRUCCION.nuevaAsignacion($1,INSTRUCCION.nuevaOperacionBinaria(INSTRUCCION.nuevoValor($1, TIPO_VALOR.IDENTIFICADOR, this._$.first_line,this._$.first_column+1), INSTRUCCION.nuevoValor(1, TIPO_VALOR.INT, this._$.first_line,this._$.first_column+1), TIPO_OPERACION.SUMA,this._$.first_line,this._$.first_column+1),this._$.first_line,this._$.first_column+1);}
 ;
 
 CASTEO: parA TIPO parC EXP
@@ -280,8 +282,18 @@ ELSEIFS: ELSEIFS CONELSEIF {$1.push($2); $$=$1}
 CONELSEIF: else if parA EXP parC llaveA OPCIONESMETODS llaveC {$$ = new INSTRUCCION.nuevoElseIf($4, $7,this._$.first_line, this._$.first_column+1)}
 ;
 
-SWITCHS: switch parA EXP parC llaveA CUERPOSWITCH llaveC 
+SWITCHS: switch parA EXP parC llaveA default dospts OPCIONESMETODS llaveC {$$ = new INSTRUCCION.nuevoSwitchDefault($3,$8,this._$.first_line, this._$.first_column+1)}
+    | switch parA EXP parC llaveA CASES llaveC {$$ = new INSTRUCCION.nuevoSwitchConCase($3,$6,null,this._$.first_line, this._$.first_column+1)}
+    | switch parA EXP parC llaveA CASES default dospts OPCIONESMETODS llaveC {$$ = new INSTRUCCION.nuevoSwitchConCase($3,$6,$9,this._$.first_line, this._$.first_column+1)}
 ;
+
+CASES: CASES CONCASE {$1.push($2); $$=$1}
+    |CONCASE {$$=[$1];}
+;
+
+CONCASE: case EXP dospts OPCIONESMETODS  {$$ = new INSTRUCCION.nuevoCase($2, $4,this._$.first_line, this._$.first_column+1)}
+;
+
 CUERPOSWITCH: case numeros dospts CUERPOMETODO CUERPOSWITCH
             | case numeros dospts CUERPOMETODO  
             | default dospts CUERPOMETODO
@@ -294,9 +306,8 @@ ELSEIF: else if parA EXP parC llaveA CUERPOMETODO llaveC
 WHILES: while parA EXP parC llaveA OPCIONESMETODS llaveC  {$$ = new INSTRUCCION.nuevoWhile($3, $6,this._$.first_line, this._$.first_column+1)}
 ;
 
-FORS: for parA DEC_VAR  EXP ptcoma EXP parC llaveA CUERPOMETODO llaveC
-    | for parA INICIALIZACION  EXP ptcoma INICIALIZACION parC llaveA CUERPOMETODO llaveC
-    | for parA INICIALIZACION  EXP ptcoma EXP parC llaveA CUERPOMETODO llaveC
+FORS: for parA DEC_VAR  EXP ptcoma INICIALIZACION parC llaveA OPCIONESMETODS llaveC {$$ = new INSTRUCCION.nuevoFor($4,$9,this._$.first_line, this._$.first_column+1)}
+    | for parA INICIALIZACION  EXP ptcoma INICIALIZACION parC llaveA OPCIONESMETODS llaveC {$$ = new INSTRUCCION.nuevoFor($4,$9,this._$.first_line, this._$.first_column+1)}
 ;
 
 DOWHILE: do llaveA OPCIONESMETODS llaveC while parA EXP parC ptcoma {$$ = new INSTRUCCION.nuevoDoWhile($7, $3,this._$.first_line, this._$.first_column+1)}
