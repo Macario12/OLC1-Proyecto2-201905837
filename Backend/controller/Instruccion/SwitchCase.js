@@ -33,7 +33,7 @@ function SentenciaSwtchCase(_instruccion, _ambito) {
 }
     if (_instruccion.instruccionesDefault != null) {
       const Bloque = require("./Bloque");
-      var nuevoambito = new Ambito(_ambito);
+      var nuevoambito = new Ambito(_ambito, "Switch");
       var ejec = Bloque(_instruccion.instruccionesDefault, nuevoambito);
       hayBreak = ejec.hayBreak;
       //mensaje += Bloque(_instruccion.instrucciones, nuevoambito)

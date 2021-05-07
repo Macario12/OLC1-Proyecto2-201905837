@@ -38,6 +38,7 @@ export class EditorComponent implements OnInit {
   editorTexto = new FormControl('');
   console = "";
   consola = new FormControl('');
+  public TablaDeSimbolos: any;
 
   constructor(private monacoLoaderService: MonacoEditorLoaderService, private analizarService: AnalizarService) {
     this.monacoLoaderService.isMonacoLoaded$
@@ -87,6 +88,7 @@ export class EditorComponent implements OnInit {
     this.analizarService.ejecutar(texto).subscribe((res:any)=>{
       console.log(res)
       this.consola.setValue(res.consola);
+      this.TablaDeSimbolos = res.tablaSimbolos
     }, err=>{
       console.log(err)
     });

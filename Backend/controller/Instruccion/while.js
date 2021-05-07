@@ -4,7 +4,7 @@ const Ambito = require("../Ambito/Ambito")
 function CicloWhile(_instruccion, _ambito){
     var mensaje = ""
 
-    var operacion = Operacion(_instruccion.expresion, _ambito)
+    var operacion = Operacion(_instruccion.expresion, _ambito, "While")
 
     if(operacion.tipo === TIPO_DATO.BOOLEAN){
         while(operacion.valor){

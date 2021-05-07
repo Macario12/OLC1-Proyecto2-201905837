@@ -12,7 +12,7 @@ function SentenciaSwitchD(_instruccion, _ambito){
            
         default:
             const Bloque = require("./Bloque")
-            var nuevoambito = new Ambito(_ambito)
+            var nuevoambito = new Ambito(_ambito, "SwitchDefault")
             var ejec = Bloque(_instruccion.instruccionDefault,nuevoambito)
             hayBreak = ejec.hayBreak;
             //mensaje += Bloque(_instruccion.instrucciones, nuevoambito)

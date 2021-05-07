@@ -1,16 +1,59 @@
+const reporteTabla = require('../TablaSimbolos/TablaSimbolos')
+class TablaSimbolos {
+  constructor(identificador, tipoSimbolo, tipoVar, entorno, linea, columna) {
+      this.identificador = identificador
+      this.tipoSimbolo = tipoSimbolo
+      this.tipoVar = tipoVar
+      this.entorno = entorno
+      this.linea = linea
+      this.columna = columna
+  }
+}
+
+function getEntornoString(ambitoActual) {
+  let listaEntornos = []
+  e = ambitoActual
+  while (e != null) {
+      listaEntornos.push(e.nombre)
+      e = e.anterior
+  }
+  listaEntornos.reverse()
+  return  (listaEntornos.length > 0)? listaEntornos.join("_") : listaEntornos.join("")
+}
+
+
 class Ambito {
-  constructor(_anterior) {
+  constructor(_anterior, _nombre) {
     this.anterior = _anterior;
+    this.nombre = _nombre;
     this.tablaSimbolos = new Map();
     this.tablaMetodos = new Map();
   }
 
   addSimbolo(_s, _simbolo) {
     this.tablaSimbolos.set(_s.toLowerCase(), _simbolo);
+     let filaTabla = new TablaSimbolos (
+            _simbolo.id,
+            _simbolo.tipoSimbolo,
+           _simbolo.tipo,
+           getEntornoString(this),
+            _simbolo.linea,
+            _simbolo.columna
+        )
+        reporteTabla.tablaSimbolos.push(filaTabla)
   }
 
   addMetodo(_s, _metodo) {
     this.tablaMetodos.set(_s.toLowerCase(), _metodo);
+    let filaTabla = new TablaSimbolos (
+      _metodo.id,
+      _metodo.tipoSimbolo,
+      _metodo.tipo,
+     getEntornoString(this),
+     _metodo.linea,
+     _metodo.columna
+  )
+  reporteTabla.tablaSimbolos.push(filaTabla)
   }
 
   getSimbolo(_s) {

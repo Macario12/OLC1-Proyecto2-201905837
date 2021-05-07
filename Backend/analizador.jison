@@ -294,11 +294,6 @@ CASES: CASES CONCASE {$1.push($2); $$=$1}
 CONCASE: case EXP dospts OPCIONESMETODS  {$$ = new INSTRUCCION.nuevoCase($2, $4,this._$.first_line, this._$.first_column+1)}
 ;
 
-CUERPOSWITCH: case numeros dospts CUERPOMETODO CUERPOSWITCH
-            | case numeros dospts CUERPOMETODO  
-            | default dospts CUERPOMETODO
-;
-
 ELSEIF: else if parA EXP parC llaveA CUERPOMETODO llaveC 
 ;
 
@@ -306,9 +301,12 @@ ELSEIF: else if parA EXP parC llaveA CUERPOMETODO llaveC
 WHILES: while parA EXP parC llaveA OPCIONESMETODS llaveC  {$$ = new INSTRUCCION.nuevoWhile($3, $6,this._$.first_line, this._$.first_column+1)}
 ;
 
-FORS: for parA DEC_VAR  EXP ptcoma INICIALIZACION parC llaveA OPCIONESMETODS llaveC {$$ = new INSTRUCCION.nuevoFor($4,$9,this._$.first_line, this._$.first_column+1)}
-    | for parA INICIALIZACION  EXP ptcoma INICIALIZACION parC llaveA OPCIONESMETODS llaveC {$$ = new INSTRUCCION.nuevoFor($4,$9,this._$.first_line, this._$.first_column+1)}
+FORS: for parA INIFOR  EXP ptcoma INICIALIZACION parC llaveA OPCIONESMETODS llaveC {$$ = new INSTRUCCION.nuevoFor($3,$4,$6,$9,this._$.first_line, this._$.first_column+1)}
 ;
+INIFOR: DEC_VAR {$$ = $1}
+    | INICIALIZACION {$$ = $1}
+;
+
 
 DOWHILE: do llaveA OPCIONESMETODS llaveC while parA EXP parC ptcoma {$$ = new INSTRUCCION.nuevoDoWhile($7, $3,this._$.first_line, this._$.first_column+1)}
 ;

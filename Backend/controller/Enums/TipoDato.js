@@ -4,6 +4,7 @@ const TIPO_DATO = {
     DOUBLE: 'DOUBLE',
     CHAR: 'CHAR',
     STRING: 'STRING',
+    VARIABLE: 'VARIABLE'
     
 }
 

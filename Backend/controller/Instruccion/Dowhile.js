@@ -8,7 +8,7 @@ function CicloDoWhile(_instruccion, _ambito){
 
     if(operacion.tipo === TIPO_DATO.BOOLEAN){
         do{
-            var nuevoAmbito = new Ambito(_ambito)
+            var nuevoAmbito = new Ambito(_ambito, "Do_While")
             const Bloque = require('./Bloque')
             mensaje += Bloque(_instruccion.instrucciones, nuevoAmbito)
            /* var ejec =Bloque(_instruccion.instrucciones, nuevoAmbito)

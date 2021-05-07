@@ -74,17 +74,26 @@
                             <table class="table table-success table-hover">
                                 <thead>
                                     <tr>
-                                        <td>hola</td>
-                                        <td>mundo</td>
+                                        <td>Identificador</td>
+                                        <td>Tipo</td>
+                                        <td>Tipo Dato</td>
+                                        <td>Ambito</td>
+                                        <td>Linea</td>
+                                        <td>Columna</td>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>2</td>
+                                    <tr *ngFor="let fila of TablaDeSimbolos">
+                                        <td>{{fila.identificador}}</td>
+                                        <td>{{fila.tipoSimbolo}}</td>
+                                        <td>{{fila.tipoVar}}</td>
+                                        <td>{{fila.entorno}}</td>
+                                        <td>{{fila.linea}}</td>
+                                        <td>{{fila.columna}}</td>
                                     </tr>
                                 </tbody>
                             </table>
+
                         </div>
                         <br>
                     </div>

@@ -64,10 +64,12 @@ const Instruccion ={
         }
     },
 
-    nuevoFor: function(_expresion, _instrucciones, _linea, _columna){
+    nuevoFor: function(_declarcion,_expresion,_asignacion, _instrucciones, _linea, _columna){
         return {
             tipo: TIPO_INSTRUCCION.FOR,
+            declaracion: _declarcion,
             expresion: _expresion,
+            asignacion: _asignacion,
             instrucciones: _instrucciones,
             linea: _linea,
             columna: _columna 

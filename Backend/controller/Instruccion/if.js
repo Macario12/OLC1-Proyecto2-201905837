@@ -10,7 +10,7 @@ function SentenciaIf(_instruccion, _ambito){
     if(operacion.tipo === TIPO_DATO.BOOLEAN){
         if(operacion.valor){
             const Bloque = require("./Bloque")
-            var nuevoambito = new Ambito(_ambito)
+            var nuevoambito = new Ambito(_ambito, "if")
             var ejec = Bloque(_instruccion.instrucciones,nuevoambito)
             hayBreak = ejec.hayBreak;
             //mensaje += Bloque(_instruccion.instrucciones, nuevoambito)

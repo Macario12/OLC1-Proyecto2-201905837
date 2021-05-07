@@ -9,7 +9,7 @@ function Exec(_isntruccion, _ambito) {
   var metodoEjecutar = _ambito.getMetodo(_isntruccion.nombre);
   console.log(metodoEjecutar.instrucciones)
   if (metodoEjecutar != null) {
-    var nuevoAmbito = new Ambito(_ambito);
+    var nuevoAmbito = new Ambito(_ambito, "Exec");
     if (metodoEjecutar.lista_parametros != null) {
       if (
         _isntruccion.lista_valores != null &&
