@@ -7,7 +7,7 @@ const Instruccion = require("./Instruccion");
 function Exec(_isntruccion, _ambito) {
   var cadena = "";
   var metodoEjecutar = _ambito.getMetodo(_isntruccion.nombre);
-  console.log(metodoEjecutar.instrucciones)
+  //console.log(metodoEjecutar.instrucciones)
   if (metodoEjecutar != null) {
     var nuevoAmbito = new Ambito(_ambito, "Exec");
     if (metodoEjecutar.lista_parametros != null) {

@@ -13,7 +13,7 @@ function SentenciaSwtchCase(_instruccion, _ambito) {
       //if (op.tipo == TIPO_DATO.BOOLEAN) {
         if (op.valor === operacion.valor) {
           const Bloque = require("./Bloque");
-          var nuevoambito = new Ambito(_ambito);
+          var nuevoambito = new Ambito(_ambito, "Switch");
           var ejec = Bloque(
             _instruccion.lista_cases[i].instruccionescase,
             nuevoambito

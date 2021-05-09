@@ -1,0 +1,32 @@
+digraph ast { 
+rankdir = "TB"; 
+node[shape = box] 
+nodo0[label="Lista_Ins"] 
+nodo74[label="DEC_FUNCION"] 
+nodo0 -> nodo74
+nodo75[label="Tipo Retorno 
+Void"] 
+nodo74 -> nodo75
+nodo76[label="Nombre 
+main"] 
+nodo74 -> nodo76
+nodo78[label="LISTA_INS"] 
+nodo74 -> nodo78
+nodo49[label="DEC_VAR"] 
+nodo78 -> nodo49
+nodo50[label="Tipo 
+INT"] 
+nodo49 -> nodo50
+nodo51[label="id 
+a"] 
+nodo49 -> nodo51
+nodo52[label="EXPRESION"] 
+nodo49 -> nodo52
+nodo47[label="2"] 
+nodo52 -> nodo47
+nodo83[label="EXEC"] 
+nodo0 -> nodo83
+nodo84[label="id 
+undefined"] 
+nodo83 -> nodo84
+}

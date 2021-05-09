@@ -13,7 +13,7 @@ function ValorExpresion(_expresion, _ambito){
     }
     else if(_expresion.tipo === TIPO_VALOR.STRING){
         return {
-            valor: _expresion.valor.substring(1, _expresion.valor.length-1),
+            valor: _expresion.valor,
             tipo: TIPO_DATO.STRING,
             linea: _expresion.linea,
             columna: _expresion.columna
@@ -29,7 +29,7 @@ function ValorExpresion(_expresion, _ambito){
     }
     else if(_expresion.tipo === TIPO_VALOR.CHAR){
         return {
-            valor: _expresion.valor.substring(1, _expresion.valor.length-1),
+            valor: _expresion.valor,
             tipo: TIPO_DATO.CHAR,
             linea: _expresion.linea,
             columna: _expresion.columna

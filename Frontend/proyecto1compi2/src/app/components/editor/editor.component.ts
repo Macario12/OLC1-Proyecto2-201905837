@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { AnalizarService } from 'src/app/services/analizar.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import {
   MonacoEditorComponent,
@@ -39,8 +40,19 @@ export class EditorComponent implements OnInit {
   console = "";
   consola = new FormControl('');
   public TablaDeSimbolos: any;
+  public imageSource;
+  nombreArchivo = "Choose file"
+  indiceEditorActual = 0
+  archivo: any
+  reporteSelccionado:string = ""
 
-  constructor(private monacoLoaderService: MonacoEditorLoaderService, private analizarService: AnalizarService) {
+  textoEditores:string[] = [""]
+
+  verArbolModal(imagen: string){
+    this.imageSource = this.sanitizer.bypassSecurityTrustResourceUrl(`data:image/png;base64, ${imagen}`);
+   }
+
+  constructor(private sanitizer: DomSanitizer,private monacoLoaderService: MonacoEditorLoaderService, private analizarService: AnalizarService) {
     this.monacoLoaderService.isMonacoLoaded$
       .pipe(
         filter(isLoaded => isLoaded),
@@ -89,9 +101,26 @@ export class EditorComponent implements OnInit {
       console.log(res)
       this.consola.setValue(res.consola);
       this.TablaDeSimbolos = res.tablaSimbolos
+      this.verArbolModal(res.astBase64)
     }, err=>{
       console.log(err)
     });
   }
+
+   seleccionarArchivo(event:any) {
+    this.nombreArchivo = event.target.files[0].name
+    this.archivo = event.target.files[0]
+  }
+
+  cargarArchivo() {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const text = reader.result!.toString().trim();
+        this.textoEditores[this.indiceEditorActual] = text
+    }
+    reader.readAsText(this.archivo);
+  }
 }
+
+
   
