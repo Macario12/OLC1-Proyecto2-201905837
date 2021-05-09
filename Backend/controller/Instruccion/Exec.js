@@ -41,7 +41,7 @@ function Exec(_isntruccion, _ambito) {
         var ejec = Bloque(metodoEjecutar.instrucciones, nuevoAmbito);
         var mensaje = ejec.cadena;
         if (ejec.hayBreak) {
-          mensaje += "Se ha encontrado un break fuera de un ciclo";
+        //  mensaje += "Se ha encontrado un break fuera de un ciclo";
         }
         return mensaje;
         //return Bloque(metodoEjecutar.instrucciones, nuevoAmbito);
